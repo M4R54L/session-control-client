@@ -9,6 +9,7 @@ export const authAction = (data) => {
         'https://control-access-server.herokuapp.com/api/auth/',
         data
       );
+      // const response = await axios.post('/api/auth/', data);
       dispatch(authActions.login(response.data.payload));
       dispatch(uiActions.showModal(true));
     } catch (error) {
