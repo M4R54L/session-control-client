@@ -2,10 +2,10 @@ import React from 'react';
 import joi from 'joi';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import classes from './Login.module.scss';
-import authApi from '../apis/auth.api';
+import classes from './Auth.module.scss';
+import { authAction } from '../../store/auth/auth.thunk';
 
 const loginSchema = joi.object({
   username: joi.string().required().min(3).messages({
@@ -20,7 +20,8 @@ const loginSchema = joi.object({
 });
 
 function Login() {
-  const [axiosError, setaxiosError] = useState('');
+  const dispatch = useDispatch();
+  const loginError = useSelector((state) => state.auth.error);
 
   const {
     register,
@@ -35,23 +36,16 @@ function Login() {
   });
 
   const onSubmit = async () => {
-    console.log(getValues());
-    try {
-      var res = await authApi.post('/', getValues());
-      console.log(res);
-      setaxiosError('');
-      reset();
-    } catch (error) {
-      setaxiosError(error.response.data.errors);
-    }
+    dispatch(authAction(getValues()));
   };
 
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <img></img>
+        <img alt=""></img>
       </div>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <h2>Ingreso</h2>
         <div className={classes.formGroup}>
           <label htmlFor="username">Usuario</label>
           <input
@@ -81,7 +75,7 @@ function Login() {
         <button type="submit" className={classes.submit}>
           Ingresar
         </button>
-        <p className={classes.error}>{axiosError}</p>
+        <p className={classes.formError}>{loginError}</p>
       </form>
     </div>
   );

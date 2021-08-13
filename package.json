@@ -42,5 +42,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://192.168.100.180:9257"
+  "proxy": "https://control-access-server.herokuapp.com/"
 }
