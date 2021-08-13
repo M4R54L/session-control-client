@@ -5,7 +5,10 @@ import { authActions } from './auth.slice';
 export const authAction = (data) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('/api/auth/', data);
+      const response = await axios.post(
+        'https://control-access-server.herokuapp.com/api/auth/',
+        data
+      );
       dispatch(authActions.login(response.data.payload));
       dispatch(uiActions.showModal(true));
     } catch (error) {
